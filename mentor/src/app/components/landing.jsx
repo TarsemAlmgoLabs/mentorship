@@ -16,7 +16,7 @@ import {
 const mentors = [
   {
     id: 1,
-    name: "Rahul Sharma",
+    name: "Vikas kumar",
     role: "Senior Software Engineer",
     company: "Google",
     initials: "RS",
