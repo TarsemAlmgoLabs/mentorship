@@ -26,77 +26,107 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/github_actions
           chmod 600 ~/.ssh/github_actions
 
+      # ==========================================
+      # DEV SERVER
+      # ==========================================
+
       - name: Deploy Dev Server
         if: github.ref == 'refs/heads/devserver'
         run: |
           ssh -o StrictHostKeyChecking=no \
-              -i ~/.ssh/github_actions \
-              -p "${{ secrets.VPS_PORT }}" \
-              "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" << 'EOF'
+            -i ~/.ssh/github_actions \
+            -p "${{ secrets.VPS_PORT }}" \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" << 'EOF'
 
           set -e
 
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
-          cd /home/webprod/apps/mentorship/mentorship/mentor
+          # Go to Git repository root
+          cd /home/webprod/apps/mentorship/mentorship
 
-          # ==========================
-          # Create .env.local
-          # ==========================
-          cat > .env.local <<ENV
-          NODE_ENV_DEV=${{ secrets.NODE_ENV_DEV }}
-
-          ENV
-
+          # Pull latest devserver code
           git fetch origin devserver
           git reset --hard origin/devserver
           git clean -fd
 
+          # Go inside frontend project
+          cd mentor
+
+          # ==========================
+          # Create .env.local
+          # ==========================
+
+          cat > .env.local <<ENV
+          NODE_ENV_DEV=${{ secrets.NODE_ENV_DEV }}
+          ENV
+
+          # Clean previous Next.js build
           rm -rf .next
 
+          # Install dependencies
           npm install
+
+          # Build Next.js
           npm run build
 
-          pm2 delete mentorship  || true
+          # Restart PM2
+          pm2 delete mentorship || true
           pm2 restart /home/webprod/apps/mentorship/mentorship/mentor/ecosystem.config.js
+
           pm2 save
 
           EOF
+
+
+      # ==========================================
+      # PRODUCTION SERVER
+      # ==========================================
 
       - name: Deploy Production
         if: github.ref == 'refs/heads/main'
         run: |
           ssh -o StrictHostKeyChecking=no \
-              -i ~/.ssh/github_actions \
-              -p "${{ secrets.VPS_PORT }}" \
-              "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" << 'EOF'
+            -i ~/.ssh/github_actions \
+            -p "${{ secrets.VPS_PORT }}" \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" << 'EOF'
 
           set -e
 
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
-          cd /home/webprod/apps/mentorship/mentorship/mentor
+          # Go to Git repository root
+          cd /home/webprod/apps/mentorship/mentorship
 
-          # ==========================
-          # Create .env.local
-          # ==========================
-          cat > .env.local <<ENV
-          NODE_ENV_PROD=${{ secrets.NODE_ENV_PROD }}
-
-          ENV
-
+          # Pull latest production code
           git fetch origin main
           git reset --hard origin/main
           git clean -fd
 
+          # Go inside frontend project
+          cd mentor
+
+          # ==========================
+          # Create .env.local
+          # ==========================
+
+          cat > .env.local <<ENV
+          NODE_ENV_PROD=${{ secrets.NODE_ENV_PROD }}
+          ENV
+
+          # Clean previous Next.js build
           rm -rf .next
 
+          # Install dependencies
           npm install
+
+          # Build Next.js
           npm run build
 
-          pm2 restart mentorship || pm2 restart ecosystem.config.js --only  mentorship
+          # Restart PM2
+          pm2 restart mentorship || pm2 restart ecosystem.config.js --only mentorship
 
           pm2 save
 
