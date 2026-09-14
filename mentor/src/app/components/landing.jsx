@@ -26,7 +26,7 @@ const mentors = [
     experience: "8+ Years",
     rating: "4.9",
     sessions: "320+",
-    price: "999",
+    price: "1000",
     availability: "Available Today",
   },
   {
@@ -40,7 +40,7 @@ const mentors = [
     experience: "7+ Years",
     rating: "4.8",
     sessions: "240+",
-    price: "799",
+    price: "800",
     availability: "Available Tomorrow",
   },
   {
@@ -54,7 +54,7 @@ const mentors = [
     experience: "6+ Years",
     rating: "5.0",
     sessions: "190+",
-    price: "1199",
+    price: "1200",
     availability: "Available Today",
   },
   {
@@ -68,7 +68,7 @@ const mentors = [
     experience: "6+ Years",
     rating: "4.9",
     sessions: "170+",
-    price: "699",
+    price: "700",
     availability: "Available This Week",
   },
   {
@@ -82,7 +82,7 @@ const mentors = [
     experience: "11+ Years",
     rating: "4.9",
     sessions: "410+",
-    price: "1499",
+    price: "1500",
     availability: "Available Tomorrow",
   },
   {
@@ -96,7 +96,7 @@ const mentors = [
     experience: "5+ Years",
     rating: "4.8",
     sessions: "150+",
-    price: "899",
+    price: "900",
     availability: "Available Today",
   },
 ];
@@ -624,7 +624,7 @@ function BookingModal({ mentor, onClose }) {
 
             <div className="grid grid-cols-2 gap-3">
 
-              {[30, 60].map((time) => (
+              {[30].map((time) => (
 
                 <button
                   key={time}
@@ -707,7 +707,7 @@ function BookingModal({ mentor, onClose }) {
 
 
           {/* Time */}
-
+{/* 
           <div className="mt-7">
 
             <h4 className="mb-3 text-sm font-semibold">
@@ -734,7 +734,7 @@ function BookingModal({ mentor, onClose }) {
 
             </div>
 
-          </div>
+          </div> */}
 
 
           {/* Summary */}
