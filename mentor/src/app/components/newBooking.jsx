@@ -101,7 +101,7 @@ const mentors = [
   },
 ];
 
-export default function Mentorship() {
+export default function NewBooking() {
   const [search, setSearch] = useState("");
   const [selectedMentor, setSelectedMentor] = useState(null);
 
@@ -141,80 +141,16 @@ export default function Mentorship() {
 
       {/* ================= CONTENT ================= */}
 
-      <div className="relative mx-auto max-w-[1500px] px-6 py-12 md:px-10 lg:px-14">
+      <div className="relative mx-auto max-w-[1500px]">
 
         {/* ================= HERO ================= */}
-
-        <div className="mx-auto max-w-4xl text-center">
-
-          {/* Badge */}
-          <div className="mb-7 flex items-center justify-center gap-4">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 rounded-lg border border-cyan-400/30 bg-cyan-400/[0.08] px-5 py-2.5">
-              <Users
-                size={17}
-                className="text-cyan-400"
-              />
-
-              <span className="text-sm font-semibold tracking-[0.22em] text-cyan-400">
-                MENTORSHIP
-              </span>
-            </div>
-
-            {/* Mentor CTA */}
-            <Link
-              href={"/onboarding"}
-              className="rounded-lg border border-slate-700 bg-[#101b27] px-5 py-2.5 text-sm font-semibold text-slate-300 transition-all duration-200 hover:border-cyan-400/40 hover:bg-cyan-400/10 hover:text-cyan-400"
-            >
-              Register As A Mentor
-            </Link>
-          </div>
-
-
-          {/* Heading */}
-
-          <h1 className="text-5xl font-bold tracking-tight md:text-6xl lg:text-[64px]">
-            Learn From{" "}
-            <span className="text-cyan-400">
-              Industry Experts
-            </span>
-          </h1>
-
-
-          {/* Description */}
-
-          <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-[#8ea7c5] md:text-xl">
-
-            Get personalized guidance from experienced
-            professionals and accelerate your career with
-            one-on-one mentorship.
-
-          </p>
-
-
-          {/* Verified */}
-
-          <div className="mx-auto mt-8 inline-flex items-center gap-2 rounded-full border border-white/[0.09] bg-white/[0.025] px-5 py-2.5">
-
-            <CheckCircle2
-              size={16}
-              className="text-cyan-400"
-            />
-
-            <span className="text-sm text-[#91a5bd]">
-              Verified by VeStaff
-            </span>
-
-          </div>
-
-        </div>
 
 
         {/* ================= SECTION HEADER ================= */}
 
-        <div className="mt-20 flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mt-0 flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
 
-          <div>
+          {/* <div>
 
             <h2 className="text-2xl font-bold md:text-3xl">
               Available Mentors on VeStaff
@@ -224,7 +160,7 @@ export default function Mentorship() {
               Find the right mentor to help you reach your goals.
             </p>
 
-          </div>
+          </div> */}
 
 
           {/* Search */}
@@ -251,7 +187,7 @@ export default function Mentorship() {
 
         {/* ================= MENTOR GRID ================= */}
 
-        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-2">
 
           {filteredMentors.map((mentor) => (
 
