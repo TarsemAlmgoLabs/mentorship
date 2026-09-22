@@ -8,7 +8,7 @@ export async function GET() {
   try {
     await connectDB();
 
-    const appointments = await Appointment.find()
+    const appointments = await MentorBookedSessions.find()
       .sort({ date: 1 })
       .lean();
 
