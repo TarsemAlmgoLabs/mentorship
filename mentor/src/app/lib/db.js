@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 const MONGODB_URI = process.env.MONGODB_URI;
 const MONGODB_DB_NAME = "MentorShip";
 
-if (!MONGODB_URI) {
-  throw new Error("Please define MONGODB_URI in .env.local");
-}
+// if (!MONGODB_URI) {
+//   throw new Error("Please define MONGODB_URI in .env.local");
+// }
 
 // Cache connection across Next.js hot reloads
 let cached = global.mongoose;
