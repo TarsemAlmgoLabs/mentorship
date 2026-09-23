@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import UserContext from "../context/user.context";
 import Link from "next/link";
 import {
   Search,
@@ -14,96 +15,101 @@ import {
   X,
 } from "lucide-react";
 
-const mentors = [
-  {
-    id: 1,
-    name: "Vikas kumar",
-    role: "Senior Software Engineer",
-    company: "Google",
-    initials: "RS",
-    expertise: "Backend Development",
-    skills: ["Node.js", "System Design", "AWS"],
-    experience: "8+ Years",
-    rating: "4.9",
-    sessions: "320+",
-    price: "1000",
-    availability: "Available Today",
-  },
-  {
-    id: 2,
-    name: "Priya Mehta",
-    role: "Product Manager",
-    company: "Microsoft",
-    initials: "PM",
-    expertise: "Product Management",
-    skills: ["Product Strategy", "PM", "Analytics"],
-    experience: "7+ Years",
-    rating: "4.8",
-    sessions: "240+",
-    price: "800",
-    availability: "Available Tomorrow",
-  },
-  {
-    id: 3,
-    name: "Arjun Kapoor",
-    role: "AI / ML Engineer",
-    company: "Amazon",
-    initials: "AK",
-    expertise: "Artificial Intelligence",
-    skills: ["Python", "Machine Learning", "GenAI"],
-    experience: "6+ Years",
-    rating: "5.0",
-    sessions: "190+",
-    price: "1200",
-    availability: "Available Today",
-  },
-  {
-    id: 4,
-    name: "Neha Verma",
-    role: "UX Design Lead",
-    company: "Adobe",
-    initials: "NV",
-    expertise: "UI/UX Design",
-    skills: ["UX Research", "Figma", "Portfolio"],
-    experience: "6+ Years",
-    rating: "4.9",
-    sessions: "170+",
-    price: "700",
-    availability: "Available This Week",
-  },
-  {
-    id: 5,
-    name: "Vikram Singh",
-    role: "Engineering Manager",
-    company: "Microsoft",
-    initials: "VS",
-    expertise: "Career & Leadership",
-    skills: ["Leadership", "Interviews", "Career"],
-    experience: "11+ Years",
-    rating: "4.9",
-    sessions: "410+",
-    price: "1500",
-    availability: "Available Tomorrow",
-  },
-  {
-    id: 6,
-    name: "Ananya Rao",
-    role: "Data Scientist",
-    company: "Flipkart",
-    initials: "AR",
-    expertise: "Data Science",
-    skills: ["Python", "SQL", "Data Science"],
-    experience: "5+ Years",
-    rating: "4.8",
-    sessions: "150+",
-    price: "900",
-    availability: "Available Today",
-  },
-];
+// const mentors = [
+//   {
+//     id: 1,
+//     name: "Vikas kumar",
+//     role: "Senior Software Engineer",
+//     company: "Google",
+//     initials: "RS",
+//     expertise: "Backend Development",
+//     skills: ["Node.js", "System Design", "AWS"],
+//     experience: "8+ Years",
+//     rating: "4.9",
+//     sessions: "320+",
+//     price: "1000",
+//     availability: "Available Today",
+//   },
+//   {
+//     id: 2,
+//     name: "Priya Mehta",
+//     role: "Product Manager",
+//     company: "Microsoft",
+//     initials: "PM",
+//     expertise: "Product Management",
+//     skills: ["Product Strategy", "PM", "Analytics"],
+//     experience: "7+ Years",
+//     rating: "4.8",
+//     sessions: "240+",
+//     price: "800",
+//     availability: "Available Tomorrow",
+//   },
+//   {
+//     id: 3,
+//     name: "Arjun Kapoor",
+//     role: "AI / ML Engineer",
+//     company: "Amazon",
+//     initials: "AK",
+//     expertise: "Artificial Intelligence",
+//     skills: ["Python", "Machine Learning", "GenAI"],
+//     experience: "6+ Years",
+//     rating: "5.0",
+//     sessions: "190+",
+//     price: "1200",
+//     availability: "Available Today",
+//   },
+//   {
+//     id: 4,
+//     name: "Neha Verma",
+//     role: "UX Design Lead",
+//     company: "Adobe",
+//     initials: "NV",
+//     expertise: "UI/UX Design",
+//     skills: ["UX Research", "Figma", "Portfolio"],
+//     experience: "6+ Years",
+//     rating: "4.9",
+//     sessions: "170+",
+//     price: "700",
+//     availability: "Available This Week",
+//   },
+//   {
+//     id: 5,
+//     name: "Vikram Singh",
+//     role: "Engineering Manager",
+//     company: "Microsoft",
+//     initials: "VS",
+//     expertise: "Career & Leadership",
+//     skills: ["Leadership", "Interviews", "Career"],
+//     experience: "11+ Years",
+//     rating: "4.9",
+//     sessions: "410+",
+//     price: "1500",
+//     availability: "Available Tomorrow",
+//   },
+//   {
+//     id: 6,
+//     name: "Ananya Rao",
+//     role: "Data Scientist",
+//     company: "Flipkart",
+//     initials: "AR",
+//     expertise: "Data Science",
+//     skills: ["Python", "SQL", "Data Science"],
+//     experience: "5+ Years",
+//     rating: "4.8",
+//     sessions: "150+",
+//     price: "900",
+//     availability: "Available Today",
+//   },
+// ];
 
 export default function Mentorship() {
   const [search, setSearch] = useState("");
   const [selectedMentor, setSelectedMentor] = useState(null);
+  const {fetchAllMentos, mentors} = useContext(UserContext);
+
+  useEffect(el=>{
+    fetchAllMentos()
+  }, [])
 
   const filteredMentors = mentors.filter((mentor) => {
     const query = search.toLowerCase();
@@ -253,10 +259,10 @@ export default function Mentorship() {
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
 
-          {filteredMentors.map((mentor) => (
+          {filteredMentors.map((mentor,idx) => (
 
             <MentorCard
-              key={mentor.id}
+              key={idx}
               mentor={mentor}
               onBook={() => setSelectedMentor(mentor)}
             />
@@ -412,10 +418,10 @@ function MentorCard({ mentor, onBook }) {
 
           <div className="flex flex-wrap gap-2">
 
-            {mentor.skills.map((skill) => (
+            {mentor.skills.map((skill,index) => (
 
               <span
-                key={skill}
+                key={index}
                 className="rounded-md border border-[#26384d] bg-[#0d1722] px-2.5 py-1.5 text-xs text-[#8ea2ba]"
               >
                 {skill}
@@ -677,10 +683,10 @@ function BookingModal({ mentor, onClose }) {
 
             <div className="grid grid-cols-5 gap-2">
 
-              {dates.map((item) => (
+              {dates.map((item,idx) => (
 
                 <button
-                  key={item.day}
+                  key={idx}
                   onClick={() => setSelectedDate(item.day)}
                   className={`rounded-xl border py-3 transition ${
                     selectedDate === item.day
