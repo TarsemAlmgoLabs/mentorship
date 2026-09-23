@@ -60,6 +60,8 @@ jobs:
 
           cat > .env.local <<ENV
           NODE_ENV_DEV=${{ secrets.NODE_ENV_DEV }}
+          MONGODB_URI=${{ secrets.MONGODB_URI }}
+
           ENV
 
           # Clean previous Next.js build
@@ -114,6 +116,8 @@ jobs:
 
           cat > .env.local <<ENV
           NODE_ENV_PROD=${{ secrets.NODE_ENV_PROD }}
+          MONGODB_URI=${{ secrets.MONGODB_URI }}
+
           ENV
 
           # Clean previous Next.js build
