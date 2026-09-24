@@ -105,7 +105,7 @@ import {
 export default function Mentorship() {
   const [search, setSearch] = useState("");
   const [selectedMentor, setSelectedMentor] = useState(null);
-  const {fetchAllMentos, mentors} = useContext(UserContext);
+  const {fetchAllMentos, mentors, bookMentor, Loading} = useContext(UserContext);
 
   useEffect(el=>{
     fetchAllMentos()
@@ -332,6 +332,8 @@ export default function Mentorship() {
         <BookingModal
           mentor={selectedMentor}
           onClose={() => setSelectedMentor(null)}
+          bookMentor={bookMentor}
+          Loading={Loading}
         />
 
       )}
@@ -547,19 +549,27 @@ function TrustItem({ icon, text }) {
 /* BOOKING MODAL */
 /* ========================================================= */
 
-function BookingModal({ mentor, onClose }) {
+function BookingModal({ mentor, onClose, bookMentor, Loading }) {
 
   const [duration, setDuration] = useState(30);
-  const [selectedDate, setSelectedDate] = useState("Today");
   const [selectedTime, setSelectedTime] = useState("12:30 PM");
 
-  const dates = [
-    { day: "Today", date: "09" },
-    { day: "Tomorrow", date: "10" },
-    { day: "Fri", date: "11" },
-    { day: "Sat", date: "12" },
-    { day: "Sun", date: "13" },
-  ];
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+
+  const dates = Array.from({ length: 7 }, (_, index) => {
+    const date = new Date();
+    date.setDate(date.getDate() + index);
+
+    return {
+      day: date.toLocaleDateString("en-US", {
+        weekday: "short",
+      }),
+      date: date.getDate().toString().padStart(2, "0"),
+      fullDate: date.toISOString().split("T")[0],
+    };
+  });
 
   const times = [
     "10:00 AM",
@@ -687,9 +697,9 @@ function BookingModal({ mentor, onClose }) {
 
                 <button
                   key={idx}
-                  onClick={() => setSelectedDate(item.day)}
+                  onClick={() => setSelectedDate(item.fullDate)}
                   className={`rounded-xl border py-3 transition ${
-                    selectedDate === item.day
+                    selectedDate === item.fullDate
                       ? "border-cyan-400/60 bg-cyan-400/[0.1] text-cyan-400"
                       : "border-[#26384d] bg-[#111d2a] text-[#7189a6]"
                   }`}
@@ -753,12 +763,12 @@ function BookingModal({ mentor, onClose }) {
                 {duration} min session
               </span>
 
-              <span className="text-lg font-bold">
+              {/* <span className="text-lg font-bold">
                 ₹
                 {duration === 30
                   ? mentor.price
                   : mentor.price * 2 - 199}
-              </span>
+              </span> */}
 
             </div>
 
@@ -766,7 +776,7 @@ function BookingModal({ mentor, onClose }) {
 
               <CalendarDays size={14} />
 
-              {selectedDate} · {selectedTime}
+              {selectedDate} 
 
             </div>
 
@@ -775,13 +785,41 @@ function BookingModal({ mentor, onClose }) {
 
           {/* CTA */}
 
-          <Link href={"/dashboard"} className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-400 py-4 text-sm font-bold text-[#061016] transition hover:bg-cyan-300 hover:shadow-[0_0_25px_rgba(0,217,255,0.2)]">
+          <button 
+             className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-400 py-4 text-sm font-bold text-[#061016] transition hover:bg-cyan-300 hover:shadow-[0_0_25px_rgba(0,217,255,0.2)]"
+             onClick={() =>
+                bookMentor({
+                  mentorId: mentor._id,
 
-            Continue to Payment
+                  mentor: {
+                    name: mentor.name,
+                    role: mentor.role,
+                    company: mentor.company,
+                    initials: mentor.initials,
+                  },
+
+                  topic: mentor.expertise,
+
+                  sessionDate: selectedDate,
+
+                  sessionTime: selectedTime,
+
+                  duration: duration,
+
+                  amount:
+                    duration === 30
+                      ? mentor.price
+                      : mentor.price * 2 - 199,
+                })
+              }
+          
+            >
+
+            {Loading ? "Wait Booking Your Session": "Continue to Booking"}
 
             <ArrowUpRight size={17} />
 
-          </Link>
+          </button>
 
 
           <p className="mt-3 text-center text-[11px] text-[#536a82]">
