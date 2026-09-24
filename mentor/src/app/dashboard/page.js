@@ -151,11 +151,17 @@ import PastSessions from "../components/pastSessions";
 import BookedSessions from "../components/bookedSessions";
 
 const tabs = [
+  // {
+  //   id: "book",
+  //   label: "Book New Session",
+  //   icon: CalendarPlus,
+  //   heading: "Book a New Mentorship Session",
+  // },
   {
-    id: "book",
-    label: "Book New Session",
-    icon: CalendarPlus,
-    heading: "Book a New Mentorship Session",
+    id: "booked",
+    label: "Booked Sessions",
+    icon: CalendarCheck,
+    heading: "Booked Sessions",
   },
   {
     id: "past",
@@ -163,12 +169,12 @@ const tabs = [
     icon: History,
     heading: "Past Sessions",
   },
-  {
-    id: "booked",
-    label: "Booked Sessions",
-    icon: CalendarCheck,
-    heading: "Booked Sessions",
-  },
+   {
+    id: "review",
+    label: "Give Feedanck",
+    icon: History,
+    heading: "Review Sessions",
+  }
 ];
 
 export default function MentorshipDashboard() {

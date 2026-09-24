@@ -7,49 +7,55 @@ import {
   ArrowUpRight,
   MoreHorizontal,
 } from "lucide-react";
-
-const bookedSessions = [
-  {
-    initials: "RS",
-    name: "Vikas Kumar",
-    role: "Senior Software Engineer",
-    company: "Google",
-    topic: "Backend Development",
-    date: "18 Sep 2026",
-    time: "6:00 PM",
-    duration: "45 min",
-    status: "Upcoming",
-  },
-  {
-    initials: "AK",
-    name: "Aman Kapoor",
-    role: "Cloud Architect",
-    company: "Amazon",
-    topic: "System Design",
-    date: "22 Sep 2026",
-    time: "7:30 PM",
-    duration: "60 min",
-    status: "Upcoming",
-  },
-  {
-    initials: "PM",
-    name: "Priya Mehta",
-    role: "Product Manager",
-    company: "Microsoft",
-    topic: "Product Strategy",
-    date: "28 Sep 2026",
-    time: "5:00 PM",
-    duration: "45 min",
-    status: "Upcoming",
-  },
-];
+import UserContext from "../context/user.context";
+import { useEffect, useContext } from "react";
+// const bookedSessions = [
+//   {
+//     initials: "RS",
+//     name: "Vikas Kumar",
+//     role: "Senior Software Engineer",
+//     company: "Google",
+//     topic: "Backend Development",
+//     date: "18 Sep 2026",
+//     time: "6:00 PM",
+//     duration: "45 min",
+//     status: "Upcoming",
+//   },
+//   {
+//     initials: "AK",
+//     name: "Aman Kapoor",
+//     role: "Cloud Architect",
+//     company: "Amazon",
+//     topic: "System Design",
+//     date: "22 Sep 2026",
+//     time: "7:30 PM",
+//     duration: "60 min",
+//     status: "Upcoming",
+//   },
+//   {
+//     initials: "PM",
+//     name: "Priya Mehta",
+//     role: "Product Manager",
+//     company: "Microsoft",
+//     topic: "Product Strategy",
+//     date: "28 Sep 2026",
+//     time: "5:00 PM",
+//     duration: "45 min",
+//     status: "Upcoming",
+//   },
+// ];
 
 export default function BookedSessions() {
+  const {Loading, fetchAllUpcomingSessions,bookedSessions} = useContext(UserContext);
+  useEffect(el=>{
+    fetchAllUpcomingSessions();
+  }, [])
+
   return (
     <div className="space-y-8">
 
       {/* Header */}
-      <div>
+      {/* <div>
         <h2 className="text-2xl font-bold text-white">
           Booked Sessions
         </h2>
@@ -57,7 +63,7 @@ export default function BookedSessions() {
         <p className="mt-2 text-slate-400">
           Manage your upcoming mentorship sessions.
         </p>
-      </div>
+      </div> */}
 
       {/* Sessions */}
       <div className="space-y-5">
@@ -138,12 +144,12 @@ export default function BookedSessions() {
                   <Video size={17} />
                   Join Session
                 </button>
-
+{/* 
                 <button
                   className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-700 text-slate-400 transition hover:border-cyan-400/30 hover:text-cyan-400"
                 >
                   <MoreHorizontal size={20} />
-                </button>
+                </button> */}
 
               </div>
             </div>
@@ -155,10 +161,10 @@ export default function BookedSessions() {
                 Session link will be available before the scheduled time.
               </p>
 
-              <button className="flex items-center gap-1 text-sm font-medium text-cyan-400 transition hover:text-cyan-300">
+              {/* <button className="flex items-center gap-1 text-sm font-medium text-cyan-400 transition hover:text-cyan-300">
                 View Details
                 <ArrowUpRight size={15} />
-              </button>
+              </button> */}
 
             </div>
           </div>

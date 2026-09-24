@@ -7,6 +7,9 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     const [mentors, setMentors] = useState([])
     const [Loading, setLoading] = useState(false);
+    const [bookedSessions, setBookedSessions] = useState([])
+    const [pastSessions, setPastSessions] = useState([]);
+
     const fetchAllMentos = async()=>{
         setLoading(true);
         const response = await axios.get(
@@ -84,8 +87,69 @@ export const UserProvider = ({ children }) => {
             }
         };
 
+    const fetchAllUpcomingSessions = async()=>{
+        try{
+            setLoading(true);
+    
+            const response = await axios.get("/api/allUpcomingUserSessions", {
+                withCredentials: true,
+            });
+    
+            console.log(response.data.sessions);
+            const bookedSessionsMap = response.data.sessions.map((session) => ({
+                initials: session.initials,
+                name: session.name,
+                role: session.role,
+                company: session.company,
+                topic: session.topic,
+                date: session.date,
+                time: session.time,
+                duration: session.duration,
+                status: session.status,
+            }));
+            setLoading(true);
+    
+            setBookedSessions(bookedSessions=> bookedSessionsMap)
+        }catch(error){
+            console.error(
+            "Failed to fetch past sessions:",
+            error.response?.data || error.message
+            );
+        }
+    }
+
+    const fetchPastSessions = async () => {
+        try {
+            const response = await axios.get(
+            "/api/allPastSessionsUser",
+            {
+                withCredentials: true,
+            }
+            );
+
+            const mappedSessions = response.data.sessions.map((session) => ({
+            initials: session.initials,
+            name: session.name,
+            role: session.role,
+            company: session.company,
+            topic: session.topic,
+            date: session.date,
+            time: session.time,
+            duration: session.duration,
+            }));
+
+            setPastSessions(mappedSessions);
+
+        } catch (error) {
+            console.error(
+            "Failed to fetch past sessions:",
+            error.response?.data || error.message
+            );
+        }
+        };
+
     return (
-        <UserContext.Provider value={{ fetchAllMentos, mentors , bookMentor, Loading}}>
+        <UserContext.Provider value={{ fetchAllMentos, pastSessions,fetchPastSessions, mentors ,bookedSessions, bookMentor, Loading, fetchAllUpcomingSessions}}>
         {children}
         </UserContext.Provider>
     );

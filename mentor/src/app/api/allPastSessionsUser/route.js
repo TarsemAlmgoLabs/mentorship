@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/app/lib/db";
-import MentorBookedSessions from "@/app/components/mentorBookings";
+import MentorshipSession from "@/app/models/Appointment";
 import Mentor from "@/app/models/Mentors";
 import jwt from "jsonwebtoken";
 
@@ -9,39 +9,39 @@ export async function GET(request) {
   try {
     await connectDB();
 
-    const token = request.cookies.get("accessToken")?.value;
+    // const token = request.cookies.get("accessToken")?.value;
 
-    if (!token) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Unauthorized",
-          sessions: [],
-        },
-        { status: 401 }
-      );
-    }
+    // if (!token) {
+    //   return NextResponse.json(
+    //     {
+    //       success: false,
+    //       message: "Unauthorized",
+    //       sessions: [],
+    //     },
+    //     { status: 401 }
+    //   );
+    // }
 
-    let decoded;
+    // let decoded;
 
-    try {
-      decoded = jwt.verify(
-        token,
-        process.env.JWT_SECRET
-      );
-    } catch (error) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Invalid or expired token",
-          sessions: [],
-        },
-        { status: 401 }
-      );
-    }
+    // try {
+    //   decoded = jwt.verify(
+    //     token,
+    //     process.env.JWT_SECRET
+    //   );
+    // } catch (error) {
+    //   return NextResponse.json(
+    //     {
+    //       success: false,
+    //       message: "Invalid or expired token",
+    //       sessions: [],
+    //     },
+    //     { status: 401 }
+    //   );
+    // }
 
     const candidateId =
-      decoded.candidateId ||
+      "6a3b62c917b1afdc92752da1" || decoded.candidateId ||
       decoded.userId ||
       decoded.id;
 
