@@ -39,34 +39,45 @@ export const MentorProvider = ({ children }) => {
         }
     };
 
-    const fetchAllUpcomingSessions = async()=>{
-        try{
+
+    const fetchAllUpcomingSessionsMentors = async()=>{
+          try {
             setLoading(true);
-    
-            const response = await axios.get("/api/allUpcomingUserSessions", {
+
+            const response = await axios.get("/api/mentors", {
                 withCredentials: true,
             });
-    
-            console.log(response.data.sessions);
-            const bookedSessionsMap = response.data.sessions.map((session) => ({
-                initials: session.initials,
-                name: session.name,
-                role: session.role,
-                company: session.company,
-                topic: session.topic,
-                date: session.date,
-                time: session.time,
-                duration: session.duration,
-                status: session.status,
-            }));
-            setLoading(true);
-    
-            setBookedSessions(bookedSessions=> bookedSessionsMap)
-        }catch(error){
+
+            console.log("Mentor sessions:", response.data.sessions);
+            const mappedSessions = (response.data.sessions || []).map(
+                (session) => ({
+                    id: session.id,
+                    candidateId: session.candidateId,
+                    initials: session.candidateInitials,
+                    name: session.candidateName,
+                    role: session.candidateRole,
+                    topic: session.topic,
+                    date: session.date,
+                    time: session.time,
+                    duration: session.duration,
+                    sessionLink: session.sessionLink,
+                    status: session.status,
+                    mentorId: session.mentorId,
+                })
+                );
+
+            setBookedSessions(mappedSessions || []);
+
+            return response.data;
+        } catch (error) {
             console.error(
-            "Failed to fetch past sessions:",
+            "Failed to fetch mentors:",
             error.response?.data || error.message
             );
+
+            throw error;
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -80,14 +91,14 @@ export const MentorProvider = ({ children }) => {
             );
 
             const mappedSessions = response.data.sessions.map((session) => ({
-            initials: session.initials,
-            name: session.name,
-            role: session.role,
-            company: session.company,
-            topic: session.topic,
-            date: session.date,
-            time: session.time,
-            duration: session.duration,
+                initials: session.initials,
+                name: session.name,
+                role: session.role,
+                company: session.company,
+                topic: session.topic,
+                date: session.date,
+                time: session.time,
+                duration: session.duration,
             }));
 
             setPastSessions(mappedSessions);
@@ -101,7 +112,7 @@ export const MentorProvider = ({ children }) => {
         };
 
     return (
-        <MentorContext.Provider value={{ registerMentor,fetchAllUpcomingSessions, fetchPastSessions}}>
+        <MentorContext.Provider value={{ registerMentor, bookedSessions,fetchAllUpcomingSessionsMentors, fetchPastSessions}}>
         {children}
         </MentorContext.Provider>
     );

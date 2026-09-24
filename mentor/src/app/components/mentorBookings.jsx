@@ -8,51 +8,59 @@ import {
   MoreHorizontal,
   UserRound,
 } from "lucide-react";
-
-const bookedSessions = [
-  {
-    initials: "AS",
-    name: "Arjun Sharma",
-    role: "Software Engineer",
-    topic: "Backend Development",
-    date: "18 Sep 2026",
-    time: "06:00 PM",
-    duration: "45 min",
-    status: "Upcoming",
-  },
-  {
-    initials: "RK",
-    name: "Rahul Kapoor",
-    role: "Frontend Developer",
-    topic: "System Design",
-    date: "19 Sep 2026",
-    time: "07:30 PM",
-    duration: "60 min",
-    status: "Upcoming",
-  },
-  {
-    initials: "NP",
-    name: "Neha Patel",
-    role: "Product Analyst",
-    topic: "Career Guidance",
-    date: "21 Sep 2026",
-    time: "05:00 PM",
-    duration: "45 min",
-    status: "Upcoming",
-  },
-  {
-    initials: "VM",
-    name: "Vivek Mehra",
-    role: "Software Developer",
-    topic: "Interview Preparation",
-    date: "23 Sep 2026",
-    time: "08:00 PM",
-    duration: "45 min",
-    status: "Upcoming",
-  },
-];
+import { useEffect, useContext } from "react";
+import MentorContext from "../context/mentor.context";
+// const bookedSessions = [
+//   {
+//     initials: "AS",
+//     name: "Arjun Sharma",
+//     role: "Software Engineer",
+//     topic: "Backend Development",
+//     date: "18 Sep 2026",
+//     time: "06:00 PM",
+//     duration: "45 min",
+//     status: "Upcoming",
+//   },
+//   {
+//     initials: "RK",
+//     name: "Rahul Kapoor",
+//     role: "Frontend Developer",
+//     topic: "System Design",
+//     date: "19 Sep 2026",
+//     time: "07:30 PM",
+//     duration: "60 min",
+//     status: "Upcoming",
+//   },
+//   {
+//     initials: "NP",
+//     name: "Neha Patel",
+//     role: "Product Analyst",
+//     topic: "Career Guidance",
+//     date: "21 Sep 2026",
+//     time: "05:00 PM",
+//     duration: "45 min",
+//     status: "Upcoming",
+//   },
+//   {
+//     initials: "VM",
+//     name: "Vivek Mehra",
+//     role: "Software Developer",
+//     topic: "Interview Preparation",
+//     date: "23 Sep 2026",
+//     time: "08:00 PM",
+//     duration: "45 min",
+//     status: "Upcoming",
+//   },
+// ];
 
 export default function MentorBookedSessions() {
+
+  const {fetchAllUpcomingSessionsMentors, bookedSessions} = useContext(MentorContext);
+  console.log(bookedSessions)
+  useEffect(el=>{
+    fetchAllUpcomingSessionsMentors();
+  },[])
+
   return (
     <div className="space-y-8">
 
