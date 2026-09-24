@@ -40,7 +40,7 @@ export async function GET(request) {
     // }
 
     const candidateId =
-      "6a3b62c917b1afdc92752da1"|| decoded.candidateId ||
+      "6a3b62c920b1afdc92752da1"|| decoded.candidateId ||
       decoded.userId ||
       decoded.id;
 

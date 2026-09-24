@@ -2,90 +2,42 @@
 import { createContext, useState } from "react";
 import axios from 'axios'
 
-const UserContext = createContext();
+const MentorContext = createContext();
 
-export const UserProvider = ({ children }) => {
+export const MentorProvider = ({ children }) => {
     const [mentors, setMentors] = useState([])
     const [Loading, setLoading] = useState(false);
     const [bookedSessions, setBookedSessions] = useState([])
     const [pastSessions, setPastSessions] = useState([]);
 
-    const fetchAllMentos = async()=>{
-        setLoading(true);
-        const response = await axios.get(
-        `/api/allMentors`,
-        {
-            withCredentials: true,
-        }
-        );
-        setMentors(mentors=> response.data.mentors);
-        setLoading(false);
-        console.log(response.data);
-    }
-
-    const bookMentor = async (data) => {
-        setLoading(true);
-
+    const registerMentor = async (payload) => {
         try {
-            const payload = {
-            candidateId: '6a3b62c920b1afdc92752da1',
-            mentorId: data.mentorId,
-
-            mentor: {
-                name: data.mentor.name,
-                role: data.mentor.role,
-                company: data.mentor.company,
-                initials: data.mentor.initials,
-            },
-
-            topic: data.topic,
-
-            sessionDate: data.sessionDate,
-            sessionTime: data.sessionTime,
-
-            duration: data.duration,
-
-            amount: data.amount,
-            };
-
-            console.log(payload)
+            setLoading(true);
 
             const response = await axios.post(
-            "/api/appointments",
+            "/api/mentors",
             payload,
             {
                 withCredentials: true,
             }
             );
 
-            console.log("Appointment created:", response.data);
-
-            // success ke baad redirect
-            if (response.data?.success) {
-            window.location.href = "/dashboard";
-            }
-            setLoading(false);
+            console.log("Mentor registered:", response.data);
 
             return response.data;
 
         } catch (error) {
+            console.error(
+            "Mentor registration failed:",
+            error.response?.data || error.message
+            );
+
+            throw error;
+
+        } finally {
             setLoading(false);
-
-            console.log(error);
-
-            const errorMessage =
-                error.response?.data?.error ||
-                error.response?.data?.message ||
-                error.message ||
-                "Something went wrong";
-
-                alert(errorMessage);
-
-                console.error("Appointment creation failed:", errorMessage);
-
-                throw error;
-            }
-        };
+        }
+    };
 
     const fetchAllUpcomingSessions = async()=>{
         try{
@@ -149,10 +101,10 @@ export const UserProvider = ({ children }) => {
         };
 
     return (
-        <UserContext.Provider value={{ fetchAllMentos, pastSessions,fetchPastSessions, mentors ,bookedSessions, bookMentor, Loading, fetchAllUpcomingSessions}}>
+        <MentorContext.Provider value={{ registerMentor,fetchAllUpcomingSessions, fetchPastSessions}}>
         {children}
-        </UserContext.Provider>
+        </MentorContext.Provider>
     );
 };
 
-export default UserContext;
+export default MentorContext;
