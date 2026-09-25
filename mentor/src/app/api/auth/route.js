@@ -35,6 +35,8 @@ export async function GET(request) {
       );
     }
 
+    console.log(decoded)
+
     // 3. Get user ID
     const userId =
       decoded.userId ||
