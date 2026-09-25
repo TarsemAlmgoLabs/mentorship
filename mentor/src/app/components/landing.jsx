@@ -105,9 +105,10 @@ import {
 export default function Mentorship() {
   const [search, setSearch] = useState("");
   const [selectedMentor, setSelectedMentor] = useState(null);
-  const {fetchAllMentos, mentors, bookMentor, Loading} = useContext(UserContext);
+  const {fetchAllMentos, mentors, bookMentor, Loading, checkAuthentication} = useContext(UserContext);
 
   useEffect(el=>{
+    checkAuthentication();
     fetchAllMentos()
   }, [])
 

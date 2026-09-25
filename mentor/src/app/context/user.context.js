@@ -10,6 +10,28 @@ export const UserProvider = ({ children }) => {
     const [bookedSessions, setBookedSessions] = useState([])
     const [pastSessions, setPastSessions] = useState([]);
 
+    const checkAuthentication = async () => {
+        try {
+            const response = await axios.get(
+            "/api/auth",
+            {
+                withCredentials: true,
+            }
+            );
+
+            console.log("Authenticated user:", response.data);
+
+            return response.data;
+        } catch (error) {
+            console.error(
+            "Authentication failed:",
+            error.response?.data || error.message
+            );
+
+            throw error;
+        }
+    };
+
     const fetchAllMentos = async()=>{
         setLoading(true);
         const response = await axios.get(
@@ -149,7 +171,7 @@ export const UserProvider = ({ children }) => {
         };
 
     return (
-        <UserContext.Provider value={{ fetchAllMentos, pastSessions,fetchPastSessions, mentors ,bookedSessions, bookMentor, Loading, fetchAllUpcomingSessions}}>
+        <UserContext.Provider value={{ checkAuthentication,fetchAllMentos, pastSessions,fetchPastSessions, mentors ,bookedSessions, bookMentor, Loading, fetchAllUpcomingSessions}}>
         {children}
         </UserContext.Provider>
     );
