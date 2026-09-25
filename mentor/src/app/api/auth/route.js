@@ -39,7 +39,7 @@ export async function GET(request) {
 
     // 3. Get user ID
     const userId =
-      decoded.id
+      decoded.user.id
     console.log("user",userId)
 
     if (!userId) {
