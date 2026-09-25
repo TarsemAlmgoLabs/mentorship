@@ -9,7 +9,10 @@ export const UserProvider = ({ children }) => {
     const [Loading, setLoading] = useState(false);
     const [bookedSessions, setBookedSessions] = useState([])
     const [pastSessions, setPastSessions] = useState([]);
-
+    const [userDetails, setUserDetails] = useState({
+        email: "",
+        id: ""
+    })
     const checkAuthentication = async () => {
         try {
             const response = await axios.get(
@@ -20,7 +23,11 @@ export const UserProvider = ({ children }) => {
             );
 
             console.log("Authenticated user:", response.data);
-
+            setUserDetails((userDetails) => ({
+            ...userDetails,
+            email: response.data.user.email,
+            id: response.data.user.id,  
+            }));
             return response.data;
         } catch (error) {
             console.error(
