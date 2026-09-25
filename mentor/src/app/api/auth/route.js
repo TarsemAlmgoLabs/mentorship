@@ -35,14 +35,12 @@ export async function GET(request) {
       );
     }
 
-    console.log(decoded)
+    console.log("decoding",decoded);
 
     // 3. Get user ID
     const userId =
-      decoded.userId ||
-      decoded.candidateId ||
-      decoded.id ||
-      decoded._id;
+      decoded.id
+    console.log("user",userId)
 
     if (!userId) {
       return NextResponse.json(
