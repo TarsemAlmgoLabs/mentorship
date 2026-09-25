@@ -61,6 +61,8 @@ jobs:
           cat > .env.local <<ENV
           NODE_ENV_DEV=${{ secrets.NODE_ENV_DEV }}
           MONGODB_URI=${{ secrets.MONGODB_URI }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+
 
           ENV
 
@@ -117,6 +119,7 @@ jobs:
           cat > .env.local <<ENV
           NODE_ENV_PROD=${{ secrets.NODE_ENV_PROD }}
           MONGODB_URI=${{ secrets.MONGODB_URI }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
 
           ENV
 
