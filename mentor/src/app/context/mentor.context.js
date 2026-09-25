@@ -81,38 +81,118 @@ export const MentorProvider = ({ children }) => {
         }
     }
 
-    const fetchPastSessions = async () => {
+    const fetchPastEventsMentor = async () => {
         try {
+            setLoading(true);
+
+            const response = await axios.get("/api/pastEventsMentos", {
+                withCredentials: true,
+            });
+
+            console.log("Mentor past sessions:", response.data.sessions);
+
+            const mappedSessions = (response.data.sessions || []).map(
+            (session) => ({
+                id: session.id,
+                candidateId: session.candidateId,
+
+                initials: session.candidateInitials,
+                name: session.candidateName,
+                role: session.candidateRole,
+
+                topic: session.topic,
+                date: session.date,
+                duration: session.duration,
+
+                earning: session.amount,
+            })
+            );
+            setLoading(false);
+
+            console.log("pasts", mappedSessions)
+
+            setPastSessions(mappedSessions);
+
+            return mappedSessions;
+        } catch (error) {
+            console.error(
+            "Failed to fetch mentor past sessions:",
+            error.response?.data || error.message
+            );
+
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchMentorSettings = async () => {
+
+        try {
+            setLoading(true);
+
             const response = await axios.get(
-            "/api/allPastSessionsUser",
+            "/api/settings",
             {
                 withCredentials: true,
             }
             );
 
-            const mappedSessions = response.data.sessions.map((session) => ({
-                initials: session.initials,
-                name: session.name,
-                role: session.role,
-                company: session.company,
-                topic: session.topic,
-                date: session.date,
-                time: session.time,
-                duration: session.duration,
-            }));
+            console.log(
+            "Current mentor settings:",
+            response.data
+            );
+            setLoading(false);
 
-            setPastSessions(mappedSessions);
+            return response.data;
 
         } catch (error) {
             console.error(
-            "Failed to fetch past sessions:",
+            "Failed to fetch mentor settings:",
             error.response?.data || error.message
             );
+
+            throw error;
+
+        } finally {
+            setLoading(false);
         }
-        };
+    };
+
+
+    const updateMentorSettings = async (payload) => {
+        try {
+            setLoading(true);
+
+            const response = await axios.put(
+            "/api/settings",
+            payload,
+            {
+                withCredentials: true,
+            }
+            );
+
+            console.log(
+            "Mentor settings updated:",
+            response.data
+            );
+            setLoading(false);
+
+            return response.data;
+        } catch (error) {
+            console.error(
+            "Failed to update mentor settings:",
+            error.response?.data || error.message
+            );
+
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <MentorContext.Provider value={{ registerMentor, bookedSessions,fetchAllUpcomingSessionsMentors, fetchPastSessions}}>
+        <MentorContext.Provider value={{ Loading ,updateMentorSettings, fetchMentorSettings, pastSessions, registerMentor, fetchPastEventsMentor, bookedSessions,fetchAllUpcomingSessionsMentors}}>
         {children}
         </MentorContext.Provider>
     );

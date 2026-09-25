@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useEffect, useContext } from "react";
+import MentorContext from "../context/mentor.context";
 import {
   Settings,
   IndianRupee,
@@ -58,6 +60,36 @@ const timeSlots = [
 
 export default function MentorSettings() {
   const [price, setPrice] = useState("1000");
+  const {fetchMentorSettings, Loading, updateMentorSettings} = useContext(MentorContext);
+
+  // useEffect(el=>{
+  //   fetchMentorSettings();
+  // }, [])
+
+  useEffect(() => {
+    const loadMentorSettings = async () => {
+      try {
+        const response = await fetchMentorSettings();
+
+        const settings = response?.settings;
+
+        if (!settings) return;
+
+        setPrice(String(settings.price ?? 1000));
+
+        if (settings.weeklyAvailability) {
+          setAvailability(settings.weeklyAvailability);
+        }
+      } catch (error) {
+        console.error(
+          "❌ Failed to load mentor settings:",
+          error.response?.data || error.message
+        );
+      }
+    };
+
+    loadMentorSettings();
+  }, []);
 
   const [availability, setAvailability] = useState(
     days.reduce((acc, day) => {
@@ -91,14 +123,16 @@ export default function MentorSettings() {
     }));
   };
 
+
+
   const saveSettings = () => {
     const settings = {
       price: Number(price),
-      availability,
+      weeklyAvailability:availability,
     };
 
     console.log("Mentor Settings:", settings);
-
+    updateMentorSettings(settings)
     // API call yahan baad mein:
     // await fetch("/api/mentor/settings", {
     //   method: "PUT",
@@ -111,7 +145,7 @@ export default function MentorSettings() {
 
       {/* ================= HEADER ================= */}
 
-      <div>
+      {/* <div>
         <div className="mb-3 inline-flex items-center gap-2 rounded-lg border border-cyan-400/20 bg-cyan-400/[0.06] px-3 py-2">
           <Settings size={15} className="text-cyan-400" />
 
@@ -128,7 +162,7 @@ export default function MentorSettings() {
           Control your session price and choose when learners can
           book a session with you.
         </p>
-      </div>
+      </div> */}
 
       {/* ================= PRICE ================= */}
 
@@ -352,7 +386,7 @@ export default function MentorSettings() {
           className="flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-400 px-6 py-3.5 text-sm font-bold text-black transition-all hover:bg-cyan-300 hover:shadow-[0_0_30px_rgba(0,220,255,.18)] sm:w-auto"
         >
           <Save size={16} />
-          Save Changes
+          {Loading ?"Saving Changes ..." :"Save Changes"}
         </button>
 
       </div>

@@ -1,5 +1,6 @@
 "use client";
-
+import { useEffect, useContext } from "react";
+import MentorContext from "../context/mentor.context";
 import {
   CalendarDays,
   Clock3,
@@ -9,71 +10,78 @@ import {
   Search,
 } from "lucide-react";
 
-const pastSessions = [
-  {
-    initials: "AS",
-    name: "Arjun Sharma",
-    role: "Software Engineer",
-    topic: "Backend Development",
-    date: "12 Sep 2026",
-    duration: "45 min",
-    earning: 999,
-  },
-  {
-    initials: "RK",
-    name: "Rahul Kapoor",
-    role: "Frontend Developer",
-    topic: "System Design",
-    date: "08 Sep 2026",
-    duration: "60 min",
-    earning: 1199,
-  },
-  {
-    initials: "NP",
-    name: "Neha Patel",
-    role: "Product Analyst",
-    topic: "Career Guidance",
-    date: "05 Sep 2026",
-    duration: "45 min",
-    earning: 799,
-  },
-  {
-    initials: "VM",
-    name: "Vivek Mehra",
-    role: "Software Developer",
-    topic: "Interview Preparation",
-    date: "01 Sep 2026",
-    duration: "45 min",
-    earning: 999,
-  },
-  {
-    initials: "RK",
-    name: "Riya Kapoor",
-    role: "Full Stack Developer",
-    topic: "React & Next.js",
-    date: "28 Aug 2026",
-    duration: "60 min",
-    earning: 1499,
-  },
-  {
-    initials: "AM",
-    name: "Aditya Malhotra",
-    role: "Junior Developer",
-    topic: "Career Roadmap",
-    date: "24 Aug 2026",
-    duration: "45 min",
-    earning: 799,
-  },
-];
+// const pastSessions = [
+//   {
+//     initials: "AS",
+//     name: "Arjun Sharma",
+//     role: "Software Engineer",
+//     topic: "Backend Development",
+//     date: "12 Sep 2026",
+//     duration: "45 min",
+//     earning: 999,
+//   },
+//   {
+//     initials: "RK",
+//     name: "Rahul Kapoor",
+//     role: "Frontend Developer",
+//     topic: "System Design",
+//     date: "08 Sep 2026",
+//     duration: "60 min",
+//     earning: 1199,
+//   },
+//   {
+//     initials: "NP",
+//     name: "Neha Patel",
+//     role: "Product Analyst",
+//     topic: "Career Guidance",
+//     date: "05 Sep 2026",
+//     duration: "45 min",
+//     earning: 799,
+//   },
+//   {
+//     initials: "VM",
+//     name: "Vivek Mehra",
+//     role: "Software Developer",
+//     topic: "Interview Preparation",
+//     date: "01 Sep 2026",
+//     duration: "45 min",
+//     earning: 999,
+//   },
+//   {
+//     initials: "RK",
+//     name: "Riya Kapoor",
+//     role: "Full Stack Developer",
+//     topic: "React & Next.js",
+//     date: "28 Aug 2026",
+//     duration: "60 min",
+//     earning: 1499,
+//   },
+//   {
+//     initials: "AM",
+//     name: "Aditya Malhotra",
+//     role: "Junior Developer",
+//     topic: "Career Roadmap",
+//     date: "24 Aug 2026",
+//     duration: "45 min",
+//     earning: 799,
+//   },
+// ];
 
 export default function MentorPastSessions() {
+
+  const {fetchPastEventsMentor, pastSessions} = useContext(MentorContext)
+
+  useEffect(el=>{
+    fetchPastEventsMentor();
+  }, [])
+
   return (
     <div className="space-y-8">
 
       {/* Header */}
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
 
-        <div>
+        {/* <div>
           <h2 className="text-2xl font-bold text-white">
             Past Sessions
           </h2>
@@ -81,7 +89,7 @@ export default function MentorPastSessions() {
           <p className="mt-2 text-sm text-slate-400">
             View your completed mentorship sessions and earnings.
           </p>
-        </div>
+        </div> */}
 
         {/* Search */}
         <div className="relative w-full md:w-64">
@@ -100,7 +108,7 @@ export default function MentorPastSessions() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
 
         <div className="rounded-2xl border border-white/[0.07] bg-[#101b27] p-5">
           <p className="text-xs text-slate-500">
@@ -132,7 +140,7 @@ export default function MentorPastSessions() {
           </p>
         </div>
 
-      </div>
+      </div> */}
 
       {/* Session List */}
       <div className="space-y-3">
